@@ -1,0 +1,98 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Sample",
+    "description": "Sample description",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "https://localhost/"
+    }
+  ],
+  "paths": {
+    "/v1/example/values": {
+      "get": {
+        "tags": [
+          "Example"
+        ],
+        "summary": "Get values (PREVIEW)",
+        "description": "An example endpoint that can be accessed anonymously with a GET to /v1/example/values\n\n***This endpoint is in PREVIEW and may be changed or removed at any time.***",
+        "operationId": "GetValues",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Example"
+                },
+                "example": {"names":["John","Paul","George","Ringo"]}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/example/values3": {
+      "get": {
+        "tags": [
+          "Example"
+        ],
+        "summary": "Get values 3 (PREVIEW)",
+        "description": "An example endpoint that can be accessed via BBID or SAS (with specific scope) with a GET to /v1/example/values3\n\n***This endpoint is in PREVIEW and may be changed or removed at any time.***",
+        "operationId": "GetValues3",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Example"
+                },
+                "example": {"names":["John","Paul","George","Ringo"]}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "SAS": [ ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Example": {
+        "type": "object",
+        "properties": {
+          "names": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The example property",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "An example data model"
+      }
+    },
+    "securitySchemes": {
+      "SAS": {
+        "type": "oauth2",
+        "description": "Authorize using the Service Authorization Service (SAS), based on a client name (pod\\service_instance) and client_secret (ServiceAccessKey).",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://sva-pusa01.app.blackbaud.net/auths/oauth2/token?grant_type=client_credentials&audience_id=local\\<INSERT_VALUE_HERE>",
+            "scopes": { }
+          }
+        }
+      }
+    }
+  },
+  "x-skyapi-required-entitlements-all": "todo"
+}

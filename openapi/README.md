@@ -1,0 +1,1 @@
+The files in this folder should be checked in when there are changes.

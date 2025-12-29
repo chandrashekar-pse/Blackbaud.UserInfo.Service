@@ -1,0 +1,65 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35219.272
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2D5DF86C-E2A9-47F0-93EF-42A8B0391542}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blackbaud.UserInfo.Service", "src\Blackbaud.UserInfo.Service\Blackbaud.UserInfo.Service.csproj", "{3C18CCB6-9EB8-4B69-9A97-783A54C9C64A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5FDF5794-7B39-44CD-8053-A737B34AFB80}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blackbaud.UserInfo.Service.UnitTests", "test\Blackbaud.UserInfo.Service.UnitTests\Blackbaud.UserInfo.Service.UnitTests.csproj", "{03234325-21D3-4B31-831D-DC8D379573BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{00F1BA19-0333-47F5-8397-76FFC7182AAC}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		openapi\skyapi.json = openapi\skyapi.json
+		skyconfig.json = skyconfig.json
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C18CCB6-9EB8-4B69-9A97-783A54C9C64A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C18CCB6-9EB8-4B69-9A97-783A54C9C64A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C18CCB6-9EB8-4B69-9A97-783A54C9C64A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3C18CCB6-9EB8-4B69-9A97-783A54C9C64A}.Debug|x64.Build.0 = Debug|Any CPU
+		{3C18CCB6-9EB8-4B69-9A97-783A54C9C64A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3C18CCB6-9EB8-4B69-9A97-783A54C9C64A}.Debug|x86.Build.0 = Debug|Any CPU
+		{3C18CCB6-9EB8-4B69-9A97-783A54C9C64A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C18CCB6-9EB8-4B69-9A97-783A54C9C64A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C18CCB6-9EB8-4B69-9A97-783A54C9C64A}.Release|x64.ActiveCfg = Release|Any CPU
+		{3C18CCB6-9EB8-4B69-9A97-783A54C9C64A}.Release|x64.Build.0 = Release|Any CPU
+		{3C18CCB6-9EB8-4B69-9A97-783A54C9C64A}.Release|x86.ActiveCfg = Release|Any CPU
+		{3C18CCB6-9EB8-4B69-9A97-783A54C9C64A}.Release|x86.Build.0 = Release|Any CPU
+		{03234325-21D3-4B31-831D-DC8D379573BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03234325-21D3-4B31-831D-DC8D379573BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03234325-21D3-4B31-831D-DC8D379573BF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{03234325-21D3-4B31-831D-DC8D379573BF}.Debug|x64.Build.0 = Debug|Any CPU
+		{03234325-21D3-4B31-831D-DC8D379573BF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{03234325-21D3-4B31-831D-DC8D379573BF}.Debug|x86.Build.0 = Debug|Any CPU
+		{03234325-21D3-4B31-831D-DC8D379573BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03234325-21D3-4B31-831D-DC8D379573BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03234325-21D3-4B31-831D-DC8D379573BF}.Release|x64.ActiveCfg = Release|Any CPU
+		{03234325-21D3-4B31-831D-DC8D379573BF}.Release|x64.Build.0 = Release|Any CPU
+		{03234325-21D3-4B31-831D-DC8D379573BF}.Release|x86.ActiveCfg = Release|Any CPU
+		{03234325-21D3-4B31-831D-DC8D379573BF}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3C18CCB6-9EB8-4B69-9A97-783A54C9C64A} = {2D5DF86C-E2A9-47F0-93EF-42A8B0391542}
+		{03234325-21D3-4B31-831D-DC8D379573BF} = {5FDF5794-7B39-44CD-8053-A737B34AFB80}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8BA45010-A8D5-4466-8D03-8882E829977D}
+	EndGlobalSection
+EndGlobal

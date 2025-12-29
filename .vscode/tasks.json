@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "dotnet",
+            "problemMatcher": "$msCompile",
+            "args": [
+                "build",
+                "${workspaceRoot}/src/Blackbaud.UserInfo.Service/Blackbaud.UserInfo.Service.csproj"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

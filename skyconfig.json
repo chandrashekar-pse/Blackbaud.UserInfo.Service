@@ -1,0 +1,21 @@
+{
+	"$schema": "./src/Blackbaud.UserInfo.Service/bin/net8.0/schemas/skyconfig.schema.json",
+	"name": "userinfo-service",
+	"namespace": "Blackbaud.UserInfo.Service",
+	"framework": ".netcore",
+	"runtime": "8.0.*",
+	"devPorts": {
+		"https": 5234
+	},
+	"serviceTitle": "Sample",
+	"serviceDescription": "Sample description",
+	"SKYAPI": {
+		"RequiredEntitlementsAll": "todo"
+	},
+	"codeCoverageThreshold": 80,
+	"permissionsResolver": {
+		"_comment": "Specify the permissions you need to include and execute `sky axs permissions generate` to generate those permissions\thttps://dev.azure.com/blackbaud/Products/_git/sky-cli-extensions-axs?path=/README.md&_a=preview",
+		"filePath": "Blackbaud.UserInfo.Service/Permissions/Permissions.cs",
+		"generatedNamespaces": [ "User management.User management", "General ledger.FENXT.Allocation management" ]
+	}
+}

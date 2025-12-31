@@ -32,6 +32,7 @@ public interface IUserCosmosRepository
     /// <param name="userName">The user name to filter by.</param>
     /// <returns>A list of User objects.</returns>
     Task<List<User>> GetAllByUserNameAsync(string userName);
+
     /// <summary>
     /// 
     /// </summary>
@@ -39,4 +40,44 @@ public interface IUserCosmosRepository
     /// <param name="entityId"></param>
     /// <returns></returns>
     Task<User> GetSingleDocumentAsync(string username, Guid entityId);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="entityId"></param>
+    /// <returns></returns>
+    Task<User> GetAsync(string id, Guid entityId);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="entityId"></param>
+    /// <returns></returns>
+    Task<User> GetByEntityAsync(Guid entityId);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="u"></param>
+    /// <returns></returns>
+    Task<User> CreateAsync(User u);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="entityId"></param>
+    /// <param name="u"></param>
+    /// <returns></returns>
+    Task<User> UpsertAsync(string id, Guid entityId, User u);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="entityId"></param>
+    /// <returns></returns>
+    Task<bool> DeleteAsync(string id, Guid entityId);
+
 }

@@ -75,13 +75,13 @@ public sealed class UserCosmosRepository: IUserCosmosRepository
     /// <param name="id">The ID of the notification to read.</param>
     /// <param name="pk">The partition key of the notification.</param>
     /// <returns>
-    /// A task that represents the asynchronous read operation. The task result contains the <see cref="Service.Models.User"/> if found; otherwise, <c>null</c>.
+    /// A task that represents the asynchronous read operation. The task result contains the <see cref="User"/> if found; otherwise, <c>null</c>.
     /// </returns>
     public async Task<User> ReadAsync(string id, string pk)
     {
         try
         {
-            var resp = await _container.ReadItemAsync<Service.Models.User>(id, new PartitionKey(pk));
+            var resp = await _container.ReadItemAsync<User>(id, new PartitionKey(pk));
             return resp.Resource;
         }
         catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -162,19 +162,127 @@ public sealed class UserCosmosRepository: IUserCosmosRepository
     }
 
     /// <summary>
-    /// Asynchronously lists all <see cref="Service.Models.User"/> items for the specified partition key.
+    /// Asynchronously lists all <see cref="User"/> items for the specified partition key.
     /// </summary>
     /// <param name="pk">The partition key to filter notifications.</param>
-    /// <returns>An async enumerable of <see cref="Service.Models.User"/> objects.</returns>
+    /// <returns>An async enumerable of <see cref="User"/> objects.</returns>
     public async IAsyncEnumerable<User> ListAsync(string pk)
     {
         var q = new QueryDefinition("SELECT * FROM c WHERE c.PartitionKey = @pk")
                     .WithParameter("@pk", pk);
-        using var it = _container.GetItemQueryIterator<Service.Models.User>(q);
+        using var it = _container.GetItemQueryIterator<User>(q);
         while (it.HasMoreResults)
         {
             foreach (var item in await it.ReadNextAsync())
                 yield return item;
+        }
+    }
+
+    /// <summary>
+    /// Asynchronously retrieves a user by identifier and phone number from the data store. 
+    /// </summary>
+    /// <param name="id">The unique identifier of the user to retrieve. Cannot be null or empty.</param>
+    /// <param name="entityId">The phone number associated with the user. Used as the partition key. Cannot be null or empty.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the user if found; otherwise, null.</returns>
+    public async Task<User> GetAsync(string id, Guid entityId)
+    {
+        try
+        {
+            var resp = await _container.ReadItemAsync<User>(id, new PartitionKey(entityId.ToString()));
+            return resp.Resource;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+    }
+
+
+    /// <summary>
+    /// Asynchronously retrieves all users associated with the specified phone number.
+    /// </summary>
+    /// <param name="entityId">The phone number to search for. Cannot be null or empty.</param>
+    /// <returns>An asynchronous stream of <see cref="User"/> objects that have the specified phone number. The stream is empty
+    /// if no users are found.</returns>
+
+    public async Task<User> GetByEntityAsync(Guid entityId)
+    {
+        var q = new QueryDefinition("SELECT TOP 1 * FROM c WHERE c.entityId = @eid")
+                    .WithParameter("@eid", entityId.ToString());
+
+        using var it = _container.GetItemQueryIterator<User>(q, requestOptions: new QueryRequestOptions
+        {
+            PartitionKey = new PartitionKey(entityId.ToString())
+        });
+
+        while (it.HasMoreResults)
+        {
+            var page = await it.ReadNextAsync();
+            return page.Resource.FirstOrDefault();
+        }
+
+        return null;
+    }
+
+
+
+    /// <summary>
+    /// Asynchronously creates a new user in the data store.
+    /// </summary>
+    /// <param name="u">The user to create. Cannot be null. The user's Phone property is used as the partition key.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the created user.</returns>
+    public async Task<User> CreateAsync(User u)
+    {
+        var resp = await _container.CreateItemAsync(u, new PartitionKey(u.EntityId.ToString()));
+        return resp.Resource;
+    }
+
+
+    /// <summary>
+    /// Updates an existing user with the specified identifier and phone number, or creates a new user if one does not
+    /// exist.
+    /// </summary>
+    /// <remarks>If the specified user does not exist, a new user is created. The method enforces that the id
+    /// and Phone properties of the user object match the provided parameters. If an ETag is provided and does not match
+    /// the current value, the update will fail.</remarks>
+    /// <param name="id">The unique identifier of the user to update. Cannot be null or empty.</param>
+    /// <param name="entityId">The phone number associated with the user. Used as the partition key. Cannot be null or empty.</param>
+    /// <param name="u">The user object containing updated information. The object's id and Phone properties will be set to match the
+    /// provided parameters.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains the updated user if the operation
+    /// succeeds; otherwise, null.</returns>
+
+    public async Task<User> UpsertAsync(string id, Guid entityId, User u)
+    {
+        // Ensure route/query values are authoritative
+        u.id = id;
+        u.EntityId = entityId;
+
+        var opts = new ItemRequestOptions();
+
+        var resp = await _container.UpsertItemAsync(u, new PartitionKey(entityId.ToString()), opts);
+        return resp.Resource;
+    }
+
+
+    /// <summary>
+    /// Asynchronously deletes a user with the specified identifier and partition key from the data store.
+    /// </summary>
+    /// <param name="id">The unique identifier of the user to delete. Cannot be null or empty.</param>
+    /// <param name="entityId">The partition key value associated with the user, typically the user's phone number. Cannot be null or empty.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result is <see langword="true"/> if the user was
+    /// successfully deleted; otherwise, <see langword="false"/> if the user was not found.</returns>
+
+    public async Task<bool> DeleteAsync(string id, Guid entityId)
+    {
+        try
+        {
+            await _container.DeleteItemAsync<User>(id, new PartitionKey(entityId.ToString()));
+            return true;
+        }
+        catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            return false;
         }
     }
 }

@@ -30,6 +30,6 @@ namespace Blackbaud.UserInfo.Service.Models
         /// <summary>
         /// Entity ID GUID
         /// </summary>
-        public required Guid EntityId { get; set; } // GUID
+        public required Guid EntityId { get; set; } // GUID & PartitionKey
     }
 }

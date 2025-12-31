@@ -162,21 +162,33 @@ public sealed class UserCosmosRepository: IUserCosmosRepository
     }
 
     /// <summary>
-    /// Asynchronously lists all <see cref="User"/> items for the specified partition key.
+    /// Asynchronously retrieves all users associated with the specified entity identifier.
     /// </summary>
-    /// <param name="pk">The partition key to filter notifications.</param>
-    /// <returns>An async enumerable of <see cref="User"/> objects.</returns>
-    public async IAsyncEnumerable<User> ListAsync(string pk)
+    /// <returns>An asynchronous stream of <see cref="User"/> objects representing the users linked to the specified entity. The
+    /// stream is empty if no users are found.</returns>
+
+    // Repositories/UserRepository.cs
+    public async Task<IReadOnlyList<User>> GetAllAsync()
     {
-        var q = new QueryDefinition("SELECT * FROM c WHERE c.PartitionKey = @pk")
-                    .WithParameter("@pk", pk);
-        using var it = _container.GetItemQueryIterator<User>(q);
-        while (it.HasMoreResults)
+        var results = new List<User>();
+
+        var query = new QueryDefinition("SELECT * FROM c");
+        var options = new QueryRequestOptions
         {
-            foreach (var item in await it.ReadNextAsync())
-                yield return item;
+            MaxItemCount = 100, // optional
+            //EnableCrossPartitionQuery = true
+        };
+
+        using var iterator = _container.GetItemQueryIterator<User>(query, requestOptions: options);
+        while (iterator.HasMoreResults)
+        {
+            var page = await iterator.ReadNextAsync();
+            results.AddRange(page.Resource);
         }
+
+        return results;
     }
+
 
     /// <summary>
     /// Asynchronously retrieves a user by identifier and phone number from the data store. 

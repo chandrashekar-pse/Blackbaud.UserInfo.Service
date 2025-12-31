@@ -44,6 +44,12 @@ public interface IUserCosmosRepository
     /// <summary>
     /// 
     /// </summary>
+    /// <returns></returns>
+    Task<IReadOnlyList<User>> GetAllAsync();
+
+    /// <summary>
+    /// 
+    /// </summary>
     /// <param name="id"></param>
     /// <param name="entityId"></param>
     /// <returns></returns>

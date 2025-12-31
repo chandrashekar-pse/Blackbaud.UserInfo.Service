@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Blackbaud.UserInfo.Service.Controllers
@@ -55,14 +56,32 @@ namespace Blackbaud.UserInfo.Service.Controllers
         /// <param name="entityId">The unique identifier of the entity for which to retrieve the user.</param>
         /// <returns>An <see cref="ActionResult{User}"/> containing the user associated with the specified entity identifier if
         /// found; otherwise, a 404 Not Found response.</returns>
-        // GET /api/users/by-entity/{entityId}
-        [HttpGet("by-entity/{entityId:guid}")]
+        // GET /api/users/by-entity/{entityId}/single
+        [HttpGet("by-entity/{entityId:guid}/single")]
         [AllowAnonymous]
         public async Task<ActionResult<User>> GetByEntityId([FromRoute] Guid entityId)
         {
             var user = await _repo.GetByEntityAsync(entityId);
             return user is null ? NotFound() : Ok(user);
         }
+
+        /// <summary>
+        /// Retrieves all users associated with the specified entity identifier.
+        /// </summary>
+        /// <remarks>This method allows anonymous access and returns all users linked to the given entity.
+        /// The response is <see cref="OkResult"/> with the user collection if users exist, or <see
+        /// cref="NotFoundResult"/> if none are found.</remarks>
+        /// <returns>An <see cref="ActionResult{T}"/> containing a collection of <see cref="User"/> objects associated with the
+        /// specified entity. Returns <see cref="NotFoundResult"/> if no users are found.</returns>
+        // GET /api/users/by-entity/{entityId}
+        [HttpGet]
+        [AllowAnonymous] // for local dev
+        public async Task<ActionResult<IReadOnlyList<User>>> GetAll()
+        {
+            var users = await _repo.GetAllAsync();
+            return users.Count == 0 ? NotFound() : Ok(users);
+        }
+
 
         /// <summary>
         /// Creates a new user resource with the specified details. 
